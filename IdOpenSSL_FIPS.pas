@@ -11,7 +11,8 @@ uses
    IdOpenSSLHeaders_crypto,
    IdOpenSSLHeaders_evp,
    IdOpenSSLHeaders_hmac,
-   IdOpenSSLHeaders_ossl_typ;
+   IdOpenSSLHeaders_ossl_typ,
+   IdSSLOpenSSLLoader;
 
 //**************** FIPS Support backend *******************
 function OpenSSLIsHashingIntfAvail : Boolean;
@@ -389,12 +390,15 @@ begin
   FreeMem(ACtx,SizeOf(HMAC_CTX));
 end;
 
-
+function LoadOpenSSL : Boolean;
+begin
+  Result := GetOpenSSLLoader.Load;
+end;
 
 initialization
   SetFIPSMode := OpenSSLSetFIPSMode;
   GetFIPSMode := OpenSSLGetFIPSMode;
-{  IsHashingIntfAvail := OpenSSLIsHashingIntfAvail;
+  IsHashingIntfAvail := OpenSSLIsHashingIntfAvail;
   IsMD2HashIntfAvail := OpenSSLIsMD2HashIntfAvail;
   GetMD2HashInst := OpenSSLGetMD2HashInst;
   IsMD4HashIntfAvail := OpenSSLIsMD4HashIntfAvail;
@@ -428,5 +432,5 @@ initialization
   GetHMACSHA512HashInst:= OpenSSLGetHMACSHA512Inst;
   UpdateHMACInst := OpenSSLUpdateHMACInst;
   FinalHMACInst := OpenSSLFinalHMACInst;
-  LoadHashLibrary := LoadOpenSSL;        }
+  LoadHashLibrary :=  LoadOpenSSL;
 end.
